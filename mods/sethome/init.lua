@@ -82,7 +82,7 @@ end
 
 minetest.register_privilege("home", {
 	description = S("Can use /sethome and /home"),
-	give_to_singleplayer = false
+	give_to_singleplayer = true
 })
 
 minetest.register_chatcommand("home", {
