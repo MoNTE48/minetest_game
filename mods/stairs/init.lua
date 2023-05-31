@@ -22,8 +22,6 @@ minetest.register_alias("stairs:slab_pinewood", "stairs:slab_pine_wood")
 
 -- Get setting for replace ABM
 
-local replace = minetest.settings:get_bool("enable_stairs_replace_abm")
-
 local function rotate_and_place(itemstack, placer, pointed_thing)
 	local p0 = pointed_thing.under
 	local p1 = pointed_thing.above
@@ -133,14 +131,6 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 			return rotate_and_place(itemstack, placer, pointed_thing)
 		end,
 	})
-
-	-- for replace ABM
-	if replace then
-		minetest.register_node(":stairs:stair_" .. subname .. "upside_down", {
-			replace_name = "stairs:stair_" .. subname,
-			groups = {slabs_replace = 1},
-		})
-	end
 
 	if recipeitem then
 		-- Recipe matches appearence in inventory
@@ -254,14 +244,6 @@ function stairs.register_slab(subname, recipeitem, groups, images, description,
 		end,
 	})
 
-	-- for replace ABM
-	if replace then
-		minetest.register_node(":stairs:slab_" .. subname .. "upside_down", {
-			replace_name = "stairs:slab_".. subname,
-			groups = {slabs_replace = 1},
-		})
-	end
-
 	if recipeitem then
 		minetest.register_craft({
 			output = "stairs:slab_" .. subname .. " 6",
@@ -293,29 +275,6 @@ function stairs.register_slab(subname, recipeitem, groups, images, description,
 			})
 		end
 	end
-end
-
-
--- Optionally replace old "upside_down" nodes with new param2 versions.
--- Disabled by default.
-
-if replace then
-	minetest.register_abm({
-		label = "Slab replace",
-		nodenames = {"group:slabs_replace"},
-		interval = 16,
-		chance = 1,
-		action = function(pos, node)
-			node.name = minetest.registered_nodes[node.name].replace_name
-			node.param2 = node.param2 + 20
-			if node.param2 == 21 then
-				node.param2 = 23
-			elseif node.param2 == 23 then
-				node.param2 = 21
-			end
-			minetest.set_node(pos, node)
-		end,
-	})
 end
 
 
