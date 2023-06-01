@@ -372,7 +372,7 @@ local function on_receive_fields(player, fields)
 
 	elseif fields.recipe_next or fields.recipe_prev then
 		data.rnum = data.rnum + (fields.recipe_next and 1 or -1)
-		if data.rnum > #data.recipes then
+		if not data.recipes or data.rnum > #data.recipes then
 			data.rnum = 1
 		elseif data.rnum == 0 then
 			data.rnum = #data.recipes
