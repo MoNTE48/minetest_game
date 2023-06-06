@@ -73,5 +73,8 @@ river_source_sounds (River source node sounds) bool false
 #    Non-functional in V6 or Singlenode mapgens.
 enable_weather (Enable weather) bool true
 
-#    If enabled, non-player actions are logged
+#    Require a Mapping Kit to use a Minimap.
+require_mapping_kit (Require Mapping Kit) bool true
+
+#    If enabled, non-player actions are logged.
 log_non_player_actions (Log non-player action) bool false

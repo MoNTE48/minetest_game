@@ -13,7 +13,8 @@ local S = minetest.get_translator("map")
 -- Global to allow overriding
 
 function map.update_hud_flags(player)
-	local creative_enabled = minetest.is_creative_enabled(player:get_player_name())
+	local creative_enabled = minetest.is_creative_enabled(player:get_player_name()) or
+		not minetest.settings:get_bool("require_mapping_kit", true)
 
 	local minimap_enabled = creative_enabled or
 		player:get_inventory():contains_item("main", "map:mapping_kit")
