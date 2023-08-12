@@ -110,7 +110,8 @@ local function populate_chest(pos, rand, dungeontype)
 	-- place items at random places in chest
 	local inv = minetest.get_meta(pos):get_inventory()
 	local listsz = inv:get_size("main")
-	assert(listsz >= #items)
+--	assert(listsz >= #items)
+	if (listsz < #items) then return end
 	for _, item in ipairs(items) do
 		local index = rand:next(1, listsz)
 		if inv:get_stack("main", index):is_empty() then
