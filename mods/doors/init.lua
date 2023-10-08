@@ -392,7 +392,7 @@ function doors.register(name, def)
 		end
 	end
 	def.after_dig_node = function(pos, node, meta, digger)
-		local above = pos:offset(0, 1, 0)
+		local above = {x = pos.x, y = pos.y + 1, z = pos.z}
 		if is_doors_upper_node(above) then
 			minetest.remove_node(above)
 		end
@@ -434,7 +434,7 @@ function doors.register(name, def)
 	else
 		def.on_blast = function(pos, intensity)
 			minetest.remove_node(pos)
-			local above = pos:offset(0, 1, 0)
+			local above = {x = pos.x, y = pos.y + 1, z = pos.z}
 			-- hidden node doesn't get blasted away.
 			if is_doors_upper_node(above) then
 				minetest.remove_node(above)
@@ -444,7 +444,7 @@ function doors.register(name, def)
 	end
 
 	def.on_destruct = function(pos)
-		local above = pos:offset(0, 1, 0)
+		local above = {x = pos.x, y = pos.y + 1, z = pos.z}
 		if is_doors_upper_node(above) then
 			minetest.remove_node(above)
 		end
