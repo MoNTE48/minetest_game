@@ -191,7 +191,7 @@ end
 
 -- check if on wet soil
 farming.can_grow = function(pos)
-	local below = minetest.get_node(pos:offset(0, -1, 0))
+	local below = minetest.get_node(vector.offset(pos, 0, -1, 0))
 	return minetest.get_item_group(below.name, "soil") >= 3
 end
 
