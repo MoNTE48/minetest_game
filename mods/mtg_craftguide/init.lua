@@ -174,7 +174,7 @@ local function is_fuel(item)
 end
 
 local function item_button_fs(fs, x, y, item, element_name, groups)
-	table.insert(fs, ("item_image_button[%s,%s;1.05,1.05;%s;%s;%s]")
+	table.insert(fs, ("item_image_button[%s,%s;1.02,1.02;%s;%s;%s]")
 		:format(x, y, item, element_name, groups and "\n"..esc(S("G")) or ""))
 
 	local tooltip
@@ -271,18 +271,21 @@ local function get_formspec(player)
 	local fs = {}
 	table.insert(fs,
 		"style_type[item_image_button;padding=2]"..
-		"field[0.3,4.2;2.8,1.2;filter;;"..esc(data.filter).."]"..
-		"label[5.8,4.15;"..minetest.colorize("yellow", data.pagenum).." / "..
-			data.pagemax.."]"..
-		"image_button[2.63,4.05;0.8,0.8;craftguide_search_icon.png;search;]"..
-		"image_button[3.25,4.05;0.8,0.8;craftguide_clear_icon.png;clear;]"..
-		"image_button[5,4.05;0.8,0.8;craftguide_prev_icon.png;prev;]"..
-		"image_button[7.25,4.05;0.8,0.8;craftguide_next_icon.png;next;]"..
+		"real_coordinates[true]"..
+		"field[0.36,5.1;3.1,0.8;Dfilter;;"..esc(data.filter).."]"..
+		"style[pages;content_offset=0]"..
+		"image_button[7.45,5.1;1.9,0.8;;pages;"..
+			minetest.colorize("yellow", data.pagenum).." / "..data.pagemax..";false;false]"..
+		"image_button[3.51,5.1;0.8,0.8;craftguide_search_icon.png;search;]"..
+		"image_button[4.36,5.1;0.8,0.8;craftguide_clear_icon.png;clear;]"..
+		"image_button[6.63,5.1;0.8,0.8;craftguide_prev_icon.png;prev;]"..
+		"image_button[9.38,5.1;0.8,0.8;craftguide_next_icon.png;next;]"..
+		"real_coordinates[false]"..
 		"tooltip[search;"..esc(S("Search")).."]"..
 		"tooltip[clear;"..esc(S("Reset")).."]"..
 		"tooltip[prev;"..esc(S("Previous page")).."]"..
 		"tooltip[next;"..esc(S("Next page")).."]"..
-		"field_close_on_enter[filter;false]")
+		"field_close_on_enter[Dfilter;false]")
 
 	if #data.items == 0 then
 		table.insert(fs, "label[3,2;"..esc(S("No items to show.")).."]")
@@ -345,9 +348,9 @@ local function on_receive_fields(player, fields)
 		data.items = init_items
 		return true
 
-	elseif (fields.key_enter_field == "filter" or fields.search)
-			and fields.filter then
-		local new = fields.filter:sub(1, 128) -- truncate to a sane length
+	elseif (fields.key_enter_field == "Dfilter" or fields.search)
+			or (fields.Dfilter and fields.Dfilter ~= data.filter) then
+		local new = fields.Dfilter:sub(1, 128) -- truncate to a sane length
 				:gsub("[%z\1-\8\11-\31\127]", "") -- strip naughty control characters (keeps \t and \n)
 				:lower() -- search is case insensitive
 		if data.filter == new then

@@ -154,24 +154,32 @@ function creative.register_tab(name, title, items)
 			local esc = minetest.formspec_escape
 			return sfinv.make_formspec(player, context,
 				(inv.size == 0 and ("label[3,2;"..esc(S("No items to show.")).."]") or "") ..
-				"label[5.8,4.15;" .. minetest.colorize("#FFFF00", tostring(pagenum)) .. " / " .. tostring(pagemax) .. "]" ..
+				"real_coordinates[true]" ..
+				"style[pages;content_offset=0]" ..
+				"image_button[7.45,5.1;1.9,0.8;;pages;" ..
+					minetest.colorize("yellow", tostring(pagenum)) .. " / " .. tostring(pagemax) .. ";false;false]" ..
+				"real_coordinates[false]" ..
 				[[
-					image[4.08,4.2;0.8,0.8;creative_trash_icon.png]
+					image[4.05,4.2;0.8,0.8;creative_trash_icon.png]
 					listcolors[#00000069;#5A5A5A;#141318;#30434C;#FFF]
-					list[detached:trash;main;4.02,4.1;1,1;]
+					list[detached:trash;main;4,4.1;1,1;]
 					listring[]
-					image_button[5,4.05;0.8,0.8;creative_prev_icon.png;creative_prev;]
-					image_button[7.25,4.05;0.8,0.8;creative_next_icon.png;creative_next;]
-					image_button[2.63,4.05;0.8,0.8;creative_search_icon.png;creative_search;]
-					image_button[3.25,4.05;0.8,0.8;creative_clear_icon.png;creative_clear;]
+					real_coordinates[true]
+					image_button[6.63,5.1;0.8,0.8;creative_prev_icon.png;creative_prev;]
+					image_button[9.38,5.1;0.8,0.8;creative_next_icon.png;creative_next;]
+					image_button[3.51,5.1;0.8,0.8;creative_search_icon.png;creative_search;]
+					image_button[4.36,5.1;0.8,0.8;creative_clear_icon.png;creative_clear;]
+					real_coordinates[false]
 				]] ..
 				"tooltip[creative_search;" .. esc(S("Search")) .. "]" ..
 				"tooltip[creative_clear;" .. esc(S("Reset")) .. "]" ..
 				"tooltip[creative_prev;" .. esc(S("Previous page")) .. "]" ..
 				"tooltip[creative_next;" .. esc(S("Next page")) .. "]" ..
 				"listring[current_player;main]" ..
-				"field_close_on_enter[creative_filter;false]" ..
-				"field[0.3,4.2;2.8,1.2;creative_filter;;" .. esc(inv.filter) .. "]" ..
+				"real_coordinates[true]" ..
+				"field_close_on_enter[Dcreative_filter;false]" ..
+				"field[0.36,5.1;3.1,0.8;Dcreative_filter;;" .. esc(inv.filter) .. "]" ..
+				"real_coordinates[false]" ..
 				"listring[detached:creative_" .. player_name .. ";main]" ..
 				"list[detached:creative_" .. player_name .. ";main;0,0;8,4;" .. tostring(inv.start_i) .. "]" ..
 				creative.formspec_add, true)
@@ -193,10 +201,10 @@ function creative.register_tab(name, title, items)
 				inv.filter = ""
 				sfinv.set_player_inventory_formspec(player, context)
 			elseif (fields.creative_search or
-					fields.key_enter_field == "creative_filter")
-					and fields.creative_filter then
+					fields.key_enter_field == "Dcreative_filter")
+					or (fields.Dcreative_filter and fields.Dcreative_filter ~= inv.filter) then
 				inv.start_i = 0
-				inv.filter = fields.creative_filter:sub(1, 128) -- truncate to a sane length
+				inv.filter = fields.Dcreative_filter:sub(1, 128) -- truncate to a sane length
 						:gsub("[%z\1-\8\11-\31\127]", "") -- strip naughty control characters (keeps \t and \n)
 						:lower() -- search is case insensitive
 				sfinv.set_player_inventory_formspec(player, context)
