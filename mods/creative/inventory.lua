@@ -200,9 +200,8 @@ function creative.register_tab(name, title, items)
 				inv.start_i = 0
 				inv.filter = ""
 				sfinv.set_player_inventory_formspec(player, context)
-			elseif (fields.creative_search or
-					fields.key_enter_field == "Dcreative_filter")
-					or (fields.Dcreative_filter and fields.Dcreative_filter ~= inv.filter) then
+			elseif fields.Dcreative_filter and (fields.key_enter_field == "Dcreative_filter" or
+					fields.creative_search or fields.Dcreative_filter ~= inv.filter) then
 				inv.start_i = 0
 				inv.filter = fields.Dcreative_filter:sub(1, 128) -- truncate to a sane length
 						:gsub("[%z\1-\8\11-\31\127]", "") -- strip naughty control characters (keeps \t and \n)
